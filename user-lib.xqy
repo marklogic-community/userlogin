@@ -26,13 +26,14 @@
          Document URI = /user-lib.xqy
       Check admin role
 :)
+xquery version "1.0-ml";
 
-module "http://www.w3.org/2003/05/xpath-functions"
+module namespace userlib = "http://www.w3.org/2003/05/xpath-functions";
 
-default element namespace = "http://www.w3.org/1999/xhtml"
+declare default element namespace "http://www.w3.org/1999/xhtml";
 
-import module "http://marklogic.com/xdmp/security" at "/security.xqy"
-
+import module namespace sec = "http://marklogic.com/xdmp/security" at 
+    "/MarkLogic/security.xqy";
 
 (:
 **************************************************************
@@ -50,16 +51,24 @@ import module "http://marklogic.com/xdmp/security" at "/security.xqy"
 ***************************************************************
 :)
 
-define function register-user (
+declare function userlib:register-user (
 	$user as xs:string,
 	$desc as xs:string,
 	$password as xs:string) as xs:boolean
 {
-	if (xdmp:eval-in (concat ('import module "http://marklogic.com/xdmp/security" at "/security.xqy" sec:create-user("',$user,'","',$desc,'","',$password,'",(),(),())'),xdmp:security-database())) then
+	if (xdmp:eval-in 
+		(concat 
+			(
+				'import module namespace sec = "http://marklogic.com/xdmp/security" at 
+    				"/MarkLogic/security.xqy";
+			  	 sec:create-user("',$user,'","',$desc,'","',$password,'",(),(),())'
+			), 
+		xdmp:security-database())
+	   ) then
 		true()
 	else
 		false()
-}
+};
 
 
 (:
@@ -77,7 +86,7 @@ define function register-user (
 ***************************************************************
 :)
 
-define function checkLogin ($user as xs:string, $password as xs:string)
+declare function userlib:checkLogin ($user as xs:string, $password as xs:string)
 	as xs:boolean
 {
 
@@ -85,5 +94,5 @@ define function checkLogin ($user as xs:string, $password as xs:string)
 		true()
 	else
 		false()
-}
+};
 

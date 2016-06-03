@@ -17,8 +17,9 @@
  : affiliated with the Apache Software Foundation.
  :)
 
+xquery version "1.0-ml";
 
-default element namespace = "http://www.w3.org/1999/xhtml"
+declare default element namespace "http://www.w3.org/1999/xhtml";
 
 xdmp:set-response-content-type ("text/html; charset=utf-8");
 

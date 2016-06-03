@@ -17,10 +17,14 @@
  : affiliated with the Apache Software Foundation.
  :)
 
-default element namespace = "http://www.w3.org/1999/xhtml"
+xquery version "1.0-ml";
 
-import module "http://marklogic.com/xdmp/security" at "/security.xqy"
-import module "http://www.w3.org/2003/05/xpath-functions" at "/user-lib.xqy"
+declare default element namespace "http://www.w3.org/1999/xhtml";
+
+import module namespace sec = "http://marklogic.com/xdmp/security" at 
+    "/MarkLogic/security.xqy";
+
+import module namespace userlib = "http://www.w3.org/2003/05/xpath-functions" at "/user-lib.xqy";
 
 let $user := xdmp:get-request-field("user", ""),
     $password := xdmp:get-request-field("password", ""),
@@ -42,7 +46,7 @@ if (($password != $password2) or ($password = "")) then
       </body>
     </html>
 	
-else if (register-user($user,$desc,$password)) then
+else if (userlib:register-user($user,$desc,$password)) then
     <html>
       <body>
         <h2>Congratulations! You are successfully registered with the site</h2>
